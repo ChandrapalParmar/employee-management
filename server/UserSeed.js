@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import connectToDatabase from "./db/db.js"
 
 const userRegister=async()=>{
-     await connectToDatabase()
+      connectToDatabase()
     try{
         const hashPassword= await bcrypt.hash("admin",10)
         const newUser= new User({
@@ -18,3 +18,6 @@ const userRegister=async()=>{
     }
 }
 userRegister();
+
+// userSeed is used to create new admin.
+// run : node --env-file=.env userSeed.js
