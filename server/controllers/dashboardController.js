@@ -4,16 +4,24 @@ import Leave from '../models/Leave.js'
 
 const getSummary = async(req,res) =>{
     try{
-        const totalEmployees = await Employee.countDocuments()
-        const totalDepartments = await Department.countDocuments()
+        const adminQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+
+        const totalEmployees = await Employee.countDocuments(adminQuery)
+        const totalDepartments = await Department.countDocuments(adminQuery)
+
         const totalSalaries = await Employee.aggregate([
-            {$group: {_id: null, totalSalary: {$sum: "$salary"}}}
+            { $match: adminQuery }, 
+            { $group: { _id: null, totalSalary: { $sum: "$salary" } } }
         ])
 
-        const employeeAppliedForLeave = await Leave.distinct('employeeId')
+        const employeeIdsForAdmin = await Employee.find(adminQuery).select('_id');
+        const employeeIds = employeeIdsForAdmin.map(emp => emp._id);
+
+        const employeeAppliedForLeave = await Leave.distinct('employeeId', { employeeId: { $in: employeeIds } });
 
         const leaveStatus = await Leave.aggregate([
-            {$group: {
+            { $match: { employeeId: { $in: employeeIds } } }, 
+            { $group: {
                 _id:"$status",
                 count: {$sum: 1}
             }}

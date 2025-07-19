@@ -33,9 +33,9 @@ const View = () => {
         fetchSalaries()
     },[])
 
-    const filterSalarie = (e)=>{
-        const filterRecords= salaries.filter((salaryItem) =>
-        salaryItem.employeeId.employeeId.toLocaleLowerCase().includes(e.toLocaleLowerCase()))
+    const filterSalarie = (q)=>{
+        const filterRecords= salaries.filter((salaryItem) => 
+        salaryItem.employeeId.employeeId.toLocaleLowerCase().includes(q.toLocaleLowerCase())) 
         setFilterSalaries(filterRecords)
     }
   return (
@@ -48,11 +48,11 @@ const View = () => {
                 <h2 className="text-2xl font-bold">Salary Histroy</h2>
             </div>
             <div className="flex justify-end my-3">
-                <input 
+                <input
                     type="text"
                     placeholder="Search By Emp ID"
                     className="border px-2 rounded-md py-0.5 border-gray-300"
-                    onChange={(e) => filterSalarie(e.target.value)}
+                    onChange={(e) => filterSalarie(e.target.value)} 
                 />
             </div>
 
@@ -71,8 +71,8 @@ const View = () => {
                     </thead>
                     <tbody>
                         {filterSalaries.map((salary)=>(
-                            <tr 
-                                key={salary._id}
+                            <tr
+                                key={salary._id} 
                                 className="bg-gray-50 border-b dark:border-gray-700">
                                     <td className="px-6 py-3">{sno++}</td>
                                     <td className="px-6 py-3">{salary.employeeId.employeeId}</td>
@@ -84,7 +84,7 @@ const View = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table> 
+                </table>
             ): <div>No Records</div> }
         </div>
     )}

@@ -32,12 +32,19 @@ const getSalary = async(req,res)=>{
         const {id,role}= req.params
         let salary
         if(role === "admin"){
-            salary = await Salary.find({employeeId: id}).populate('employeeId','employeeId')
-        }
-        else{
-            const employee = await Employee.findOne({userId: id})
+            const employee = await Employee.findOne({_id: id, adminId: req.user._id});
+            if (!employee) {
+                return res.status(404).json({ success: false, error: "Employee not found or not authorized" });
+            }
             salary = await Salary.find({employeeId: employee._id}).populate('employeeId','employeeId')
-        }        
+        }
+        else{ 
+            const employee = await Employee.findOne({userId: id})
+            if (!employee) {
+                return res.status(404).json({ success: false, error: "Employee not found" });
+            }
+            salary = await Salary.find({employeeId: employee._id}).populate('employeeId','employeeId')
+        }
         return res.status(200).json({success: true, salary})
     } catch(error) {
         return res.status(500).json({success:false, error:"salary get server error"})

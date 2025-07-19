@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/authContext"
 import { useState } from "react"
 import axios from "axios"
-
+import { toast } from 'react-toastify'; 
 
 const Setting = () => {
     const navigate =useNavigate()
@@ -24,6 +24,7 @@ const Setting = () => {
         e.preventDefault()
         if(setting.newPassword !== setting.confirmPassword) {
             setError("Password Not Matched")
+            toast.error("New password and confirm password do not match."); 
         } else {
             try {
                 const response = await axios.put(
@@ -35,16 +36,22 @@ const Setting = () => {
                         },
                     })
                     if(response.data.success) {
+                        toast.success("Password changed successfully!"); 
+                        setError("");
+        
                         if (user.role === "admin") {
-                            navigate("/admin-dashboard/employees"); // Agar admin hai toh admin dashboard par
+                            navigate("/admin-dashboard");
                         } else {
-                            navigate("/employee-dashboard"); // Agar employee hai toh employee dashboard par
+                            navigate("/employee-dashboard"); 
                         }
-                        setError("")
-                    }
+                    } 
             } catch(error) {
-                if(error.response && !error.response.data.success) {
+                if(error.response && error.response.data.error) { 
                     setError(error.response.data.error)
+                    toast.error(error.response.data.error); 
+                } else {
+                    setError("Server Error");
+                    toast.error("Server Error");
                 }
             }
         }
@@ -54,7 +61,7 @@ const Setting = () => {
         <h2 className="text-2xl font-bold mb-6">Change Password</h2>
         <p className="text-red-500">{error}</p>
         <form onSubmit={handleSubmit}>
-            {/* Department name */}
+           
             <div>
                 <label className="text-sm font-medium text-gray-700">
                     Old Password
@@ -62,7 +69,7 @@ const Setting = () => {
                 <input
                     type="password"
                     name="oldPassword"
-                    placeholder="Change Password"
+                    placeholder="Old Password" 
                     onChange={handleChange}
                     className="mt-1 w-full p-2 border border-gray-300 rounded-md"
                     required
@@ -96,7 +103,7 @@ const Setting = () => {
                     required
                 />
             </div>
-            <button 
+            <button
                 type="submit"
                 className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-md">
                 Change Password

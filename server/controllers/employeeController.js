@@ -7,7 +7,7 @@ import Department from "../models/Department.js"
 
 const storage = multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null, "public/uploads")        
+        cb(null, "public/uploads")
     },
     filename: (req,file,cb)=>{
         cb(null,Date.now() + path.extname(file.originalname))
@@ -56,19 +56,21 @@ const addEmployee = async(req,res)=>{
             maritalStatus,
             designation,
             department,
-            salary
+            salary,
+            adminId: req.user._id 
         })
 
         await newEmployee.save()
         return res.status(200).json({success: true, message:"employee created"})
     } catch(error){
         return res.status(500).json({success: false, error:"server error in adding employee "})
-    }    
+    }
 }
 
 const getEmployees = async(req,res) =>{
     try{
-        const employees= await Employee.find().populate('userId',{password: 0}).populate("department")
+        const query = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+        const employees= await Employee.find(query).populate('userId',{password: 0}).populate("department")
         return res.status(200).json({success:true,employees})
     } catch(error){
          return res.status(500).json({success:false,error:"get employees server error"})
@@ -80,9 +82,15 @@ const getEmployee = async(req,res) =>{
     const {id}=req.params
     try{
         let employee;
-        employee= await Employee.findById({_id: id}).populate('userId',{password: 0}).populate("department")
+
+        const commonQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+
+        employee= await Employee.findById({_id: id, ...commonQuery}).populate('userId',{password: 0}).populate("department")
         if(!employee){
-           employee= await Employee.findOne({userId: id}).populate('userId',{password: 0}).populate("department")
+           employee= await Employee.findOne({userId: id, ...commonQuery}).populate('userId',{password: 0}).populate("department")
+        }
+        if (!employee) {
+            return res.status(404).json({ success: false, error: "Employee not found or not authorized" });
         }
         return res.status(200).json({success:true,employee})
     } catch(error){
@@ -101,9 +109,11 @@ const updateEmployee = async(req,res) =>{
         salary,
     }= req.body
 
-    const employee = await Employee.findById({_id: id})
+    const commonQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+
+    const employee = await Employee.findOne({_id: id, ...commonQuery})
     if(!employee){
-        return res.status(404).json({success:false, error:"Employee Not Found"})
+        return res.status(404).json({success:false, error:"Employee Not Found or Not Authorized"})
     }
     const user = await User.findById({_id: employee.userId})
      if(!user){
@@ -130,7 +140,8 @@ const updateEmployee = async(req,res) =>{
 const fetchEmployeesByDepId = async(req,res) =>{
     const {id}=req.params
     try{
-        const employees= await Employee.find({department : id})
+        const commonQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+        const employees= await Employee.find({department : id, ...commonQuery})
         return res.status(200).json({success:true,employees})
     } catch(error){
          return res.status(500).json({success:false,error:"get employeesByDepId server error"})

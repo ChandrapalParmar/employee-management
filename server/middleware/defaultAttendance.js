@@ -4,19 +4,26 @@ import Employee from "../models/Employee.js"
 const defaultAttendance = async(req, res,next) =>{
     try{
         const date = new Date().toISOString().split('T')[0]
-        const existingAttendance = await Attendance.findOne({date})
         
-        if(!existingAttendance){
-            const employees = await Employee.find({})
-            const attendance = employees.map(employee =>({
-                date, employeeId: employee._id, status:null
-            }))
+        const employeeQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
 
-            await Attendance.insertMany(attendance)
+        const employees = await Employee.find(employeeQuery)
+
+        for (const employee of employees) {
+            const existingAttendance = await Attendance.findOne({ date, employeeId: employee._id });
+
+            if (!existingAttendance) {
+                const newAttendance = {
+                    date,
+                    employeeId: employee._id,
+                    status: null
+                };
+                await Attendance.create(newAttendance);
+            }
         }
         next()
     } catch(error){
-        res.status(500).json({success: false, error:error})        
+        res.status(500).json({success: false, error:error.message})
     }
 }
 

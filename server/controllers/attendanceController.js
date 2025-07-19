@@ -5,7 +5,11 @@ const getAttendance = async(req,res) =>{
     try {
         const date = new Date().toISOString().split('T')[0]
 
-        const attendance= await Attendance.find({date}).populate({
+        const employeeQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+        const employeeIdsForAdmin = await Employee.find(employeeQuery).select('_id');
+        const employeeIds = employeeIdsForAdmin.map(emp => emp._id);
+
+        const attendance= await Attendance.find({date, employeeId: { $in: employeeIds }}).populate({
             path: "employeeId",
             populate: [
                 "department",
@@ -23,20 +27,29 @@ const updateAttendance = async (req,res) => {
         const {employeeId} =req.params
         const {status} = req.body
         const date = new Date().toISOString().split("T")[0]
-        const employee = await Employee.findOne({ employeeId })
+
+        const employee = await Employee.findOne({ employeeId, adminId: req.user._id });
+        if (!employee) {
+            return res.status(404).json({ success: false, error: "Employee not found or not authorized" });
+        }
 
         const attendance = await Attendance.findOneAndUpdate({employeeId: employee._id ,date}, {status}, {new :true})
 
         res.status(200).json({success:true ,attendance})
     } catch(err){
-        req.status(500).json({success:false, message:err.message})
+        res.status(500).json({success:false, message:err.message}) 
     }
 }
 
 const attendanceReport= async(req,res) =>{
     try{
         const {date,limit=5, skip= 0} = req.query
-        const query = {}
+        let query = {}
+
+        const employeeQuery = req.user.role === 'admin' ? { adminId: req.user._id } : {};
+        const employeeIdsForAdmin = await Employee.find(employeeQuery).select('_id');
+        const employeeIds = employeeIdsForAdmin.map(emp => emp._id);
+        query.employeeId = { $in: employeeIds }; 
 
         if(date){
             query.date = date
@@ -69,4 +82,4 @@ const attendanceReport= async(req,res) =>{
     }
 }
 
-export {getAttendance,updateAttendance,attendanceReport} 
+export {getAttendance,updateAttendance,attendanceReport}

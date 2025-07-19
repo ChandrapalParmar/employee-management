@@ -10,9 +10,10 @@ const employeeSchema=new Schema({
     designation: {type: String},
     department:{type:Schema.Types.ObjectId, ref:"Department", required:true},
     salary: {type:Number, required:true},
+    adminId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}, 
     createdAt: {type: Date, default:Date.now},
     updatedAt: {type: Date, default:Date.now},
 })
 
 const Employee=mongoose.model("Employee",employeeSchema)
-export default Employee;
+export default Employee; 

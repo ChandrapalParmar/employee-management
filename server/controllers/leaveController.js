@@ -26,9 +26,17 @@ const getLeave = async(req,res)=>{
         const {id,role} = req.params
         let leaves
         if(role ==="admin"){
-            leaves = await Leave.find({employeeId: id})
-        } else{
+ 
+            const employee = await Employee.findOne({_id: id, adminId: req.user._id});
+            if (!employee) {
+                return res.status(404).json({ success: false, error: "Employee not found or not authorized" });
+            }
+            leaves = await Leave.find({employeeId: employee._id})
+        } else{ 
             const employee = await Employee.findOne({userId: id})
+            if (!employee) {
+                return res.status(404).json({ success: false, error: "Employee not found" });
+            }
             leaves = await Leave.find({ employeeId: employee._id})
         }
         return res.status(200).json({success:true, leaves})
@@ -40,7 +48,15 @@ const getLeave = async(req,res)=>{
 
 const getLeaves =async(req,res) =>{
      try{
-        const leaves= await Leave.find().populate({
+        let query = {};
+        if (req.user.role === 'admin') {
+
+            const employeeIdsForAdmin = await Employee.find({ adminId: req.user._id }).select('_id');
+            const employeeIds = employeeIdsForAdmin.map(emp => emp._id);
+            query = { employeeId: { $in: employeeIds } };
+        }
+
+        const leaves= await Leave.find(query).populate({
             path: "employeeId",
             populate: [
                 {
@@ -53,7 +69,7 @@ const getLeaves =async(req,res) =>{
                 }
             ]
         })
-        
+
         return res.status(200).json({success:true, leaves})
     } catch(error) {
         return res.status(500).json({success:false, error:"Leave add server error"})
@@ -63,7 +79,20 @@ const getLeaves =async(req,res) =>{
 const getLeaveDetail = async (req,res)=>{
     try{
         const {id} = req.params
-        const leave= await Leave.findById({_id: id}).populate({
+ 
+        let leaveQuery = {_id: id};
+        if (req.user.role === 'admin') {
+            const leave = await Leave.findById(id);
+            if (!leave) {
+                return res.status(404).json({ success: false, error: "Leave not found" });
+            }
+            const employee = await Employee.findById(leave.employeeId);
+            if (!employee || employee.adminId.toString() !== req.user._id.toString()) {
+                return res.status(404).json({ success: false, error: "Leave not found or not authorized" });
+            }
+        }
+
+        const leave= await Leave.findById(leaveQuery).populate({
             path: "employeeId",
             populate: [
                 {
@@ -76,7 +105,7 @@ const getLeaveDetail = async (req,res)=>{
                 }
             ]
         })
-        
+
         return res.status(200).json({success:true, leave})
     } catch(error) {
         return res.status(500).json({success:false, error:"Leave add server error"})
@@ -86,7 +115,20 @@ const getLeaveDetail = async (req,res)=>{
 const updateLeave = async(req,res) =>{
     try{
         const {id} =req.params
-        const leave= await Leave.findByIdAndUpdate({_id: id}, {status: req.body.status})
+      
+        let updateQuery = {_id: id};
+        if (req.user.role === 'admin') {
+            const leave = await Leave.findById(id);
+            if (!leave) {
+                return res.status(404).json({ success: false, error: "Leave not found" });
+            }
+            const employee = await Employee.findById(leave.employeeId);
+            if (!employee || employee.adminId.toString() !== req.user._id.toString()) {
+                return res.status(404).json({ success: false, error: "Leave not found or not authorized" });
+            }
+        }
+
+        const leave= await Leave.findByIdAndUpdate(updateQuery, {status: req.body.status}, {new: true})
         if(!leave){
             return res.status(404).json({success:false, error:"leave not founded"})
         }
