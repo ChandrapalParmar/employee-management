@@ -29,7 +29,7 @@ const Attendance = () => {
           sno: sno++,
           department: att.employeeId.department.dep_name,
           name: att.employeeId.userId.name,
-          action: (<AttendanceHelper status={att.status} employeeId={att.employeeId.employeeId} statusChange={setAttendance}/>),
+          action: (<AttendanceHelper status={att.status} employeeId={att.employeeId.employeeId} statusChange={statusChange}/>),
         }))
         setAttendance(data)
         setFilteredAttendance(data)

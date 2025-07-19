@@ -35,7 +35,11 @@ const Setting = () => {
                         },
                     })
                     if(response.data.success) {
-                        navigate("/admin-dashboard/employees")
+                        if (user.role === "admin") {
+                            navigate("/admin-dashboard/employees"); // Agar admin hai toh admin dashboard par
+                        } else {
+                            navigate("/employee-dashboard"); // Agar employee hai toh employee dashboard par
+                        }
                         setError("")
                     }
             } catch(error) {

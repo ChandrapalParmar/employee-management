@@ -33,9 +33,9 @@ const View = () => {
         fetchSalaries()
     },[])
 
-    const filterSalarie = (q)=>{
-        const filterRecords= salaries.filter((leave) =>
-        leave.employeeId.toLocaleLowerCase().includes(q.toLocaleLowerCase()))
+    const filterSalarie = (e)=>{
+        const filterRecords= salaries.filter((salaryItem) =>
+        salaryItem.employeeId.employeeId.toLocaleLowerCase().includes(e.toLocaleLowerCase()))
         setFilterSalaries(filterRecords)
     }
   return (
@@ -52,7 +52,7 @@ const View = () => {
                     type="text"
                     placeholder="Search By Emp ID"
                     className="border px-2 rounded-md py-0.5 border-gray-300"
-                    onChange={filterSalarie}
+                    onChange={(e) => filterSalarie(e.target.value)}
                 />
             </div>
 
@@ -72,7 +72,7 @@ const View = () => {
                     <tbody>
                         {filterSalaries.map((salary)=>(
                             <tr 
-                                key={salary.id}
+                                key={salary._id}
                                 className="bg-gray-50 border-b dark:border-gray-700">
                                     <td className="px-6 py-3">{sno++}</td>
                                     <td className="px-6 py-3">{salary.employeeId.employeeId}</td>
