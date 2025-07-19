@@ -1,4 +1,5 @@
 import axios from "axios"
+import { FaCheck, FaTimes, FaUserMd, FaCalendarAlt } from "react-icons/fa"
 
 export const columns= [
     {
@@ -47,29 +48,62 @@ export const AttendanceHelper = ({status ,employeeId,statusChange}) => {
             alert("Failed to update attendance. Please try again."); 
         }
     }
+
+    // Get status badge styling
+    const getStatusBadge = (status) => {
+        switch(status?.toLowerCase()) {
+            case 'present':
+                return "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+            case 'absent':
+                return "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+            case 'sick':
+                return "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+            case 'leave':
+                return "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
+            default:
+                return "inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600"
+        }
+    }
+
   return (
     <div className="flex items-center space-x-4">
-        {status && <p className="bg-gray-100 w-20 text-center py-2 rounded">{status}</p>}
+        {status && (
+            <div className={getStatusBadge(status)}>
+                {status}
+            </div>
+        )}
     
         <div className="flex space-x-2"> 
             <button
-                className="px-4 py-2 bg-green-500 text-white"
-                onClick={() => markEmployee("Present", employeeId)}>
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-medium rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+                onClick={() => markEmployee("Present", employeeId)}
+                title="Mark as Present"
+            >
+                <FaCheck className="mr-1" />
                 Present
             </button>
             <button
-                className="px-4 py-2 bg-red-500 text-white"
-                onClick={() => markEmployee("Absent", employeeId)}> 
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+                onClick={() => markEmployee("Absent", employeeId)}
+                title="Mark as Absent"
+            > 
+                <FaTimes className="mr-1" />
                 Absent
             </button>
             <button
-                className="px-4 py-2 bg-gray-500 text-white"
-                onClick={() => markEmployee("Sick", employeeId)}> 
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white text-sm font-medium rounded-lg hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+                onClick={() => markEmployee("Sick", employeeId)}
+                title="Mark as Sick"
+            > 
+                <FaUserMd className="mr-1" />
                 Sick
             </button>
             <button
-                className="px-4 py-2 bg-yellow-500 text-white"
-                onClick={() => markEmployee("Leave", employeeId)}> 
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-sm font-medium rounded-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+                onClick={() => markEmployee("Leave", employeeId)}
+                title="Mark as On Leave"
+            > 
+                <FaCalendarAlt className="mr-1" />
                 Leave
             </button>
         </div>

@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { FaEdit, FaTrash } from "react-icons/fa"
 
 export const columns= [
     {
@@ -40,13 +41,23 @@ export const DepartmentButtons =({Id,onDepartmentDelete})=>{
     }
 }
     return(
-        <div className="flex space-x-3">
-            <button className="px-3 py-1 bg-teal-600 text-white"
+        <div className="flex space-x-2">
+            <button 
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                 onClick={()=> navigate(`/admin-dashboard/department/${Id}`)}
-            >Edit</button>
-            <button className="px-3 py-1 bg-red-600 text-white"
-            onClick={() => handleDelete(Id)}
-            >Delete</button>
+                title="Edit Department"
+            >
+                <FaEdit className="mr-1" />
+                Edit
+            </button>
+            <button 
+                className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-medium rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
+                onClick={() => handleDelete(Id)}
+                title="Delete Department"
+            >
+                <FaTrash className="mr-1" />
+                Delete
+            </button>
         </div> 
     )
 }

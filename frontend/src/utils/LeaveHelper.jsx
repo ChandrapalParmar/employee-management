@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { FaEye } from "react-icons/fa"
 
 export const columns = [
     {
@@ -52,9 +53,11 @@ export const LeaveButtons = ({Id }) =>{
 
     return (
         <button 
-            className="px-4 py-1 bg-teal-500 rounded text-white hover:bg-teal-600"
+            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white text-sm font-medium rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
             onClick={()=> handleView(Id)}
+            title="View Leave Details"
         >
+            <FaEye className="mr-2" />
             View
         </button>
     )

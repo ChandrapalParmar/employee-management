@@ -11,11 +11,13 @@ const Login = () => {
   const [name, setName] = useState(""); 
   const [isRegisteringAdmin, setIsRegisteringAdmin] = useState(false); 
   const [error , setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { login }= useAuth()
   const navigate= useNavigate()
 
   const handleLoginSubmit= async (e)=>{
     e.preventDefault()
+    setIsLoading(true);
     try{
       const response= await axios.post(
         "http://localhost:3000/api/auth/login",
@@ -39,11 +41,14 @@ const Login = () => {
         setError("Server Error")
         toast.error("Server Error"); 
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
   const handleAdminRegisterSubmit = async (e) => { 
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:3000/api/auth/register-admin",
@@ -65,104 +70,219 @@ const Login = () => {
         setError("Server Error");
         toast.error("Server Error"); 
       }
+    } finally {
+      setIsLoading(false);
     }
   };
-
-
+ 
   return (
-    <div className="flex flex-col items-center h-screen justify-center bg-gradient-to-b from-teal-600 from-50% to-gray-100 to-50% space-y-6">
-      <h2 className="font-pacifico text-3xl text-white">Employee Management System</h2>
-      <div className="border shadow p-6 w-80 bg-white">
-        <h2 className="text-2xl font-bold mb-4 text-center">
-            {isRegisteringAdmin ? "Register Admin" : "Login"} 
-        </h2>
-        {error && <p className="text-red-500 text-center mb-2">{error}</p>} 
+    <div className="min-h-screen flex items-center justify-center gradient-primary p-4 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      </div>
 
-         {isRegisteringAdmin ? ( 
+      <div className="relative z-10 w-full max-w-md fade-in">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl mb-4">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m0 0h4M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-white font-inter mb-2">
+            Employee Management
+          </h1>
+          <p className="text-white/80 text-lg font-medium">
+            System
+          </p>
+        </div>
+
+        {/* Login/Register Card */}
+        <div className="glass rounded-3xl p-8 shadow-2xl backdrop-blur-xl border border-white/20">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 font-inter">
+              {isRegisteringAdmin ? "Create Admin Account" : "Welcome Back"} 
+            </h2>
+            <p className="text-gray-600 mt-2">
+              {isRegisteringAdmin ? "Register as an administrator" : "Sign in to your account"}
+            </p>
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <p className="text-red-600 text-sm font-medium text-center">{error}</p>
+            </div>
+          )} 
+
+          {isRegisteringAdmin ? ( 
             // Admin Registration Form
-            <form onSubmit={handleAdminRegisterSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700">Name</label>
-                    <input type="text"
-                    placeholder="Enter Name"
-                    className="w-full px-3 py-2 border"
-                    onChange={(e)=> setName(e.target.value)}
-                    value={name}
-                    required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700">Email</label>
-                    <input type="email"
-                    placeholder="Enter Email"
-                    className="w-full px-3 py-2 border"
-                    onChange={(e)=> setEmail(e.target.value)}
-                    value={email}
-                    required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-gray-700">Password</label>
-                    <input type="password"
-                    placeholder="******"
-                    className="w-full px-3 py-2 border"
-                    onChange={(e)=> setPassword(e.target.value)}
-                    value={password}
-                    required
-                    />
-                </div>
-                <div className="mb-4">
-                    <button type="submit" className="w-full bg-teal-600 text-white py-2">Register Admin</button>
-                </div>
-                <p className="text-center text-sm">
-                    Already have an account?{" "}
-                    <button type="button" onClick={() => setIsRegisteringAdmin(false)} className="text-teal-600 hover:underline">
-                        Login here
-                    </button>
+            <form onSubmit={handleAdminRegisterSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Full Name
+                </label>
+                <input 
+                  type="text"
+                  id="name"
+                  placeholder="Enter your full name"
+                  className="form-input"
+                  onChange={(e)=> setName(e.target.value)}
+                  value={name}
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input 
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  className="form-input"
+                  onChange={(e)=> setEmail(e.target.value)}
+                  value={email}
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Password
+                </label>
+                <input 
+                  type="password"
+                  id="password"
+                  placeholder="Create a strong password"
+                  className="form-input"
+                  onChange={(e)=> setPassword(e.target.value)}
+                  value={password}
+                  required
+                />
+              </div>
+              
+              <button 
+                type="submit" 
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed btn-animate"
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="loading-spinner w-5 h-5 border-2 border-white/30 border-t-white rounded-full mr-2"></div>
+                    Creating Account...
+                  </div>
+                ) : (
+                  "Create Admin Account"
+                )}
+              </button>
+              
+              <div className="text-center">
+                <p className="text-gray-600 text-sm">
+                  Already have an account?{" "}
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      setIsRegisteringAdmin(false);
+                      setError(null);
+                    }} 
+                    className="text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors"
+                  >
+                    Sign in here
+                  </button>
                 </p>
+              </div>
             </form>
-         ) : (
+          ) : (
             // Login Form
-            <form onSubmit={handleLoginSubmit}>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-gray-700">Email</label>
-                    <input type="email"
-                    placeholder="Enter Email"
-                    className="w-full px-3 py-2 border"
-                    onChange={(e)=> setEmail(e.target.value)}
-                    value={email}
-                    required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-gray-700">Password</label>
-                    <input type="password"
-                    placeholder="******"
-                    className="w-full px-3 py-2 border"
-                    onChange={(e)=> setPassword(e.target.value)}
-                    value={password}
-                    required
-                    />
-                </div>
-                <div className="mb-4 flex items-center justify-between">
-                    <label className="inline-flex items-center">
-                        <input type="checkbox" className="form-chechbox"/>
-                        <span className="ml-2 text-gray-700">Remember Me</span>
-                    </label>
-                    <a href="#" className="text-teal-600">Forgot password?</a>
-                </div>
-                <div className="mb-4">
-                    <button type="submit" className="w-full bg-teal-600 text-white py-2">Login</button>
-                </div>
-                <p className="text-center text-sm">
-                    New Admin?{" "} 
-                    <button type="button" onClick={() => setIsRegisteringAdmin(true)} className="text-teal-600 hover:underline">
-                        Register here
-                    </button>
+            <form onSubmit={handleLoginSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input 
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  className="form-input"
+                  onChange={(e)=> setEmail(e.target.value)}
+                  value={email}
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Password
+                </label>
+                <input 
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  className="form-input"
+                  onChange={(e)=> setPassword(e.target.value)}
+                  value={password}
+                  required
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    className="w-4 h-4 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 focus:ring-2"
+                  />
+                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                </label>
+                <a href="#" className="text-sm text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors">
+                  Forgot password?
+                </a>
+              </div>
+              
+              <button 
+                type="submit" 
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed btn-animate"
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="loading-spinner w-5 h-5 border-2 border-white/30 border-t-white rounded-full mr-2"></div>
+                    Signing in...
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
+              </button>
+              
+              <div className="text-center">
+                <p className="text-gray-600 text-sm">
+                  New Admin?{" "} 
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      setIsRegisteringAdmin(true);
+                      setError(null);
+                    }} 
+                    className="text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors"
+                  >
+                    Register here
+                  </button>
                 </p>
+              </div>
             </form>
-         )}
-      </div> 
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-white/70 text-sm">
+            2024 Employee Management System. All rights reserved.
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

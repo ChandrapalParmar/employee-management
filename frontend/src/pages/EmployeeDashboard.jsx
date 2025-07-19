@@ -4,11 +4,17 @@ import Navbar from '../components/Navbar.jsx'
 
 const EmployeeDashboard = () => {
   return (
-    <div className="flex">
-      <Sidebar/>
-      <div className="flex-1 ml-64 bg-gray-100 h-screen">
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar />
+      
+      {/* Main Content Area */}
+      <div className="flex-1 ml-64 transition-all duration-300 ease-in-out bg-gray-100 h-screen">
         <Navbar />
-        <Outlet />
+        
+        {/* Page Content */}
+        <main className="min-h-screen">
+          <Outlet />
+        </main>
       </div>
     </div>
   )
