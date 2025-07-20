@@ -1,7 +1,7 @@
 import axios from "axios"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { useAuth } from "../../context/authContext"
+import { useAuth } from "../../context/AuthContext"
 import { FaCalendarAlt, FaSearch, FaSpinner, FaArrowLeft, FaPlus, FaCalendarCheck, FaClock, FaCheckCircle, FaTimesCircle, FaExclamationCircle } from "react-icons/fa"
 
 const List = () => {
@@ -14,7 +14,10 @@ const List = () => {
 
   const fetchLeaves = async ()=>{
         try {
-            const response= await axios.get(`http://localhost:3000/api/leave/employee/${id}`, {
+            
+            const employeeId = typeof id === 'object' ? id.id : id; 
+
+            const response= await axios.get(`http://localhost:3000/api/leave/${employeeId}/${user.role}`, { 
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },

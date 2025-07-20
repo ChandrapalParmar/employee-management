@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext";
 import { toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
 
@@ -279,7 +279,7 @@ const Login = () => {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-white/70 text-sm">
-            2024 Employee Management System. All rights reserved.
+            2025 Employee Management System. All rights reserved.
           </p>
         </div>
       </div>

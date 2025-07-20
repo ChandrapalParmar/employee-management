@@ -1,6 +1,6 @@
 import {NavLink} from 'react-router-dom'
 import {FaTachometerAlt, FaUser, FaCalendarAlt, FaMoneyBillWave, FaCogs} from 'react-icons/fa'
-import { useAuth } from '../../context/authContext'
+import { useAuth } from '../../context/AuthContext'
 
 const Sidebar = () => {
   const {user} = useAuth()
@@ -28,11 +28,7 @@ const Sidebar = () => {
             <FaTachometerAlt />
                 <span>Dashboard</span>
             </NavLink>
-             <NavLink to={`/employee-dashboard/profile/${user._id}`}
-             className={({isActive})=> `${isActive ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg transform scale-[1.02]" : "text-gray-300 hover:text-white hover:bg-white/10"} flex items-center space-x-4 py-3 px-4 rounded-xl transition-all duration-300`}>
-            <FaUser />
-                <span>My Profile</span>
-            </NavLink>
+            
              <NavLink to={`/employee-dashboard/leaves/${user._id}`}
              className={({isActive})=> `${isActive ? "bg-gradient-to-r from-teal-500 to-teal-600 text-white shadow-lg transform scale-[1.02]" : "text-gray-300 hover:text-white hover:bg-white/10"} flex items-center space-x-4 py-3 px-4 rounded-xl transition-all duration-300`}>
             <FaCalendarAlt />

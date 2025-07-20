@@ -1,5 +1,5 @@
 import { FaUser, FaClock, FaCalendarAlt, FaBriefcase, FaChartLine } from "react-icons/fa"
-import {useAuth} from '../../context/authContext'
+import {useAuth} from '../../context/AuthContext'
 
 const Summary = () => {
     const {user} = useAuth()

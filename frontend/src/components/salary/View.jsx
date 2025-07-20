@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { useAuth } from "../../context/authContext"
+import { useAuth } from "../../context/AuthContext"
 import { FaDollarSign, FaSearch, FaSpinner, FaArrowLeft, FaCalendarAlt, FaChartLine, FaMoneyBillWave } from "react-icons/fa"
 
 const View = () => {
@@ -55,6 +55,16 @@ const View = () => {
 
     const stats = calculateStats()
 
+    const handleEditSalary = () => {
+
+        if (filterSalaries && filterSalaries.length > 0) {
+            const employeeDocId = filterSalaries[0].employeeId._id; 
+            navigate(`/employee-dashboard/salary/edit/${employeeDocId}`); 
+        } else {
+            alert("No salary records found to edit."); 
+        }
+    };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
       <div className="max-w-7xl mx-auto">
@@ -63,7 +73,7 @@ const View = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button 
-                onClick={() => navigate(-1)}
+                onClick={() => handleEditSalary}
                 className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-colors"
               >
                 <FaArrowLeft className="text-gray-600" />

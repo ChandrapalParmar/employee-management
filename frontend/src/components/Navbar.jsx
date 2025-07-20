@@ -1,15 +1,13 @@
-import { useAuth } from "../context/authContext"
+import { useAuth } from "../context/AuthContext"
 import { FaUser, FaSignOutAlt, FaBell, FaCog } from "react-icons/fa"
 
 const Navbar = () => {
     const {user,logout} = useAuth()
 
-    // Get user initials for avatar fallback
     const getUserInitials = (name) => {
         return name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'
     }
 
-    // Get greeting based on time
     const getGreeting = () => {
         const hour = new Date().getHours()
         if (hour < 12) return 'Good morning'
