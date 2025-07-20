@@ -2,11 +2,13 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import { FaUser, FaIdCard, FaCalendar, FaVenusMars, FaBuilding, FaRing, FaArrowLeft, FaSpinner, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBriefcase } from 'react-icons/fa'
+import { useAuth } from '../../context/AuthContext'
 
 const View = () => {
     const {id} = useParams()
     const [employee, setEmployee]= useState(null)
     const navigate = useNavigate()
+    const { user } = useAuth()
 
   useEffect(()=>{
      const fetchEmployee =async()=>{
@@ -26,7 +28,7 @@ const View = () => {
       } 
     }
     fetchEmployee()
-  },[])
+  },[id])
     
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
@@ -36,7 +38,7 @@ const View = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button 
-                onClick={() => navigate("/admin-dashboard/employees")}
+                onClick={() => user.role === 'admin' ? navigate("/admin-dashboard/employees") : navigate("/employee-dashboard")}
                 className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-colors"
               >
                 <FaArrowLeft className="text-gray-600" />
@@ -222,28 +224,30 @@ const View = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                  <button 
-                    onClick={() => navigate(`/admin-dashboard/employees/edit/${employee._id}`)}
-                    className="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-teal-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    Edit Profile
-                  </button>
-                  <button 
-                    onClick={() => navigate(`/admin-dashboard/employees/salary/${employee._id}`)}
-                    className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    View Salary
-                  </button>
-                  <button 
-                    onClick={() => navigate(`/admin-dashboard/employees/leaves/${employee._id}`)}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
-                    View Leaves
-                  </button>
+              {user.role === 'admin' && (
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <button 
+                      onClick={() => navigate(`/admin-dashboard/employees/edit/${employee._id}`)}
+                      className="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 text-white font-semibold rounded-xl hover:from-teal-700 hover:to-teal-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      Edit Profile
+                    </button>
+                    <button 
+                      onClick={() => navigate(`/admin-dashboard/employees/salary/${employee._id}`)}
+                      className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      View Salary
+                    </button>
+                    <button 
+                      onClick={() => navigate(`/admin-dashboard/employees/leaves/${employee._id}`)}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                    >
+                      View Leaves
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         ) : (
@@ -261,4 +265,4 @@ const View = () => {
   )
 }
 
-export default View
+export default View 
