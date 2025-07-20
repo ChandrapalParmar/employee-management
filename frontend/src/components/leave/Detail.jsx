@@ -12,7 +12,7 @@ const Detail = () => {
   useEffect(()=>{
      const fetchLeave =async()=>{
       try{
-        const response =await axios.get(`http://localhost:3000/api/leave/detail/${id}`,{
+        const response =await axios.get(`https://employee-ms-server.onrender.com/api/leave/detail/${id}`,{
           headers:{
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -32,7 +32,7 @@ const Detail = () => {
   const changeStatus = async (id,status)=>{
         setIsUpdating(true)
         try{
-        const response =await axios.put(`http://localhost:3000/api/leave/${id}`,status,{
+        const response =await axios.put(`https://employee-ms-server.onrender.com/api/leave/${id}`,status,{
           headers:{
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -150,7 +150,7 @@ const Detail = () => {
                 <div className="text-center mb-6">
                   <div className="relative inline-block">
                     <img 
-                      src={`http://localhost:3000/${leave.employeeId.userId.profileImage}`} 
+                      src={`https://employee-ms-server.onrender.com/${leave.employeeId.userId.profileImage}`} 
                       alt="Employee Profile"
                       className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover mx-auto"
                     />

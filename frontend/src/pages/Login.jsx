@@ -20,7 +20,7 @@ const Login = () => {
     setIsLoading(true);
     try{
       const response= await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://employee-ms-server.onrender.com/api/auth/login",
         {email,password}
       );
       if(response.data.success){
@@ -51,7 +51,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/register-admin",
+        "https://employee-ms-server.onrender.com/api/auth/register-admin",
         { name, email, password }
       );
       if (response.data.success) {

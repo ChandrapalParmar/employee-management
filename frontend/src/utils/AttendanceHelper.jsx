@@ -35,7 +35,7 @@ export const AttendanceHelper = ({status ,employeeId,statusChange}) => {
    
     const markEmployee = async (newStatus, employeeId) => { 
         try { 
-            const response = await axios.put(`http://localhost:3000/api/attendance/update/${employeeId}`,{status: newStatus},{ // <-- Updated: 'status: newStatus' use kiya gaya
+            const response = await axios.put(`https://employee-ms-server.onrender.com/api/attendance/update/${employeeId}`,{status: newStatus},{ // <-- Updated: 'status: newStatus' use kiya gaya
                 headers: {
                     Authorization :  `Bearer ${localStorage.getItem("token")}`,
                 },

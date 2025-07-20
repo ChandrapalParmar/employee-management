@@ -55,7 +55,7 @@ const Navbar = () => {
               <div className="relative">
                 {user.profileImage ? (
                   <img
-                    src={`http://localhost:3000/${user.profileImage}`}
+                    src={`https://employee-ms-server.onrender.com/${user.profileImage}`}
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 hover:border-teal-500 transition-colors"
                   />

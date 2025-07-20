@@ -41,7 +41,7 @@ export const columns= [
 
     let departments
       try{
-        const response =await axios.get('http://localhost:3000/api/department',{
+        const response =await axios.get('https://employee-ms-server.onrender.com/api/department',{
           headers:{
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -62,7 +62,7 @@ export const columns= [
 
     let employees
       try{
-        const response =await axios.get(`http://localhost:3000/api/employee/department/${id}`,{
+        const response =await axios.get(`https://employee-ms-server.onrender.com/api/employee/department/${id}`,{
           headers:{
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }

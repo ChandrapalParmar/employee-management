@@ -15,7 +15,7 @@ const View = () => {
     const fetchSalaries = async ()=>{
         try {
               const salaryId = typeof id === 'object' ? id.id : id;
-              const response = await axios.get(`http://localhost:3000/api/salary/${salaryId}/${user.role}`, {
+              const response = await axios.get(`https://employee-ms-server.onrender.com/api/salary/${salaryId}/${user.role}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },

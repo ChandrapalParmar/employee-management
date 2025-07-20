@@ -17,7 +17,7 @@ const List = () => {
             
             const employeeId = typeof id === 'object' ? id.id : id; 
 
-            const response= await axios.get(`http://localhost:3000/api/leave/${employeeId}/${user.role}`, { 
+            const response= await axios.get(`https://employee-ms-server.onrender.com/api/leave/${employeeId}/${user.role}`, { 
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },

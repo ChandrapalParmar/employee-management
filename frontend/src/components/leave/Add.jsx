@@ -21,7 +21,7 @@ const Add = () => {
         e.preventDefault()
         setIsSubmitting(true)
         try{
-        const response =await axios.post(`http://localhost:3000/api/leave/add`, leave,{
+        const response =await axios.post(`https://employee-ms-server.onrender.com/api/leave/add`, leave,{
           headers:{
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }

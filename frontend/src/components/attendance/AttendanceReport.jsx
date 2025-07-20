@@ -18,7 +18,7 @@ const AttendanceReport = () => {
       if(dateFilter){
         query.append("date", dateFilter)
       }
-      const response =await axios.get(`http://localhost:3000/api/attendance/report?${query.toString()}`,{
+      const response =await axios.get(`https://employee-ms-server.onrender.com/api/attendance/report?${query.toString()}`,{
         headers:{
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
