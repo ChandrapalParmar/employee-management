@@ -12,23 +12,23 @@ export const columns= [
         name:"Name",
         selector: (row) => row.name,
         sortable: true,
-        width:"200px"
+        width:"180px"
     },
     {
         name:"Image",
         selector: (row) => row.profileImage,
-        width:"100px"
+        width:"90px"
     },
     {
         name:"Department",
         selector: (row) => row.dep_name,
-        width:"130px"
+        width:"125px"
     },
     {
         name:"DOB",
         selector: (row) => row.dob,
         sortable: true,
-        width:"140px"
+        width:"135px"
     },
     {
         name:"Action",
@@ -83,7 +83,7 @@ export const columns= [
         const navigate=useNavigate()
     
         return(
-            <div className="flex space-x-3">
+            <div className="flex space-x-2.5">
                 <button 
                     className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-teal-500 to-teal-600 text-white text-sm font-medium rounded-lg hover:from-teal-600 hover:to-teal-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                     onClick={()=> navigate(`/admin-dashboard/employees/${Id}`)}
