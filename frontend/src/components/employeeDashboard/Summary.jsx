@@ -30,7 +30,7 @@ const Summary = () => {
               <p className="text-teal-200 text-lg">Welcome to your Employee Dashboard</p>
               <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
                 <span className="px-4 py-2 bg-white/20 rounded-full text-sm font-medium backdrop-blur-sm">
-                  Employee Portal
+                  Employee 
                 </span>
                 <span className="px-4 py-2 bg-white/20 rounded-full text-sm font-medium backdrop-blur-sm">
                   <FaClock className="inline mr-2" />

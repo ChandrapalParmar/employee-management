@@ -182,18 +182,6 @@ const DepartmentList = () => {
                 </div>
               </div>
             </div>
-            
-            <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-4">
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                  <FaPlus className="text-white" size={16} />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-purple-600">Quick Actions</p>
-                  <p className="text-sm font-semibold text-purple-900">Add New Dept</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

@@ -170,52 +170,6 @@ const AdminSummary = () => {
             />
           </div>
         </div>
-
-        {/* Quick Actions Section */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 lg:p-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-6 font-inter">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="flex items-center space-x-3 p-4 bg-teal-50 hover:bg-teal-100 rounded-xl transition-colors group">
-              <div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <FaUsers className="text-white" />
-              </div>
-              <div className="text-left">
-                <p className="font-semibold text-gray-900">Add Employee</p>
-                <p className="text-sm text-gray-600">Register new staff</p>
-              </div>
-            </button>
-            
-            <button className="flex items-center space-x-3 p-4 bg-amber-50 hover:bg-amber-100 rounded-xl transition-colors group">
-              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <FaBuilding className="text-white" />
-              </div>
-              <div className="text-left">
-                <p className="font-semibold text-gray-900">Add Department</p>
-                <p className="text-sm text-gray-600">Create new department</p>
-              </div>
-            </button>
-            
-            <button className="flex items-center space-x-3 p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors group">
-              <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <FaMoneyBillWave className="text-white" />
-              </div>
-              <div className="text-left">
-                <p className="font-semibold text-gray-900">Manage Salary</p>
-                <p className="text-sm text-gray-600">Update compensation</p>
-              </div>
-            </button>
-            
-            <button className="flex items-center space-x-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors group">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <FaFileAlt className="text-white" />
-              </div>
-              <div className="text-left">
-                <p className="font-semibold text-gray-900">View Reports</p>
-                <p className="text-sm text-gray-600">Generate analytics</p>
-              </div>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   )

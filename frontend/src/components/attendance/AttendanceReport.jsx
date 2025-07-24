@@ -102,10 +102,6 @@ const AttendanceReport = () => {
                 <p className="text-gray-600 mt-1">Comprehensive attendance analytics and insights</p>
               </div>
             </div>
-            <button className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white font-medium rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg hover:shadow-xl">
-              <FaDownload className="mr-2" />
-              Export Report
-            </button>
           </div>
         </div>
 
