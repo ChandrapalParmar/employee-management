@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => { 
   const [email,setEmail] =useState("");
@@ -12,6 +13,7 @@ const Login = () => {
   const [isRegisteringAdmin, setIsRegisteringAdmin] = useState(false); 
   const [error , setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login }= useAuth()
   const navigate= useNavigate()
 
@@ -214,20 +216,26 @@ const Login = () => {
                 />
               </div>
               
-              <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Password
-                </label>
-                <input 
-                  type="password"
-                  id="password"
-                  placeholder="Enter your password"
-                  className="form-input"
-                  onChange={(e)=> setPassword(e.target.value)}
-                  value={password}
-                  required
-                />
-              </div>
+              {/* Step 3: Update password input field */}
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"} // Dynamic type
+            id="password"
+            placeholder="Enter your password"
+            className="form-input" // Ensure this class has w-full
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            required
+          />
+          {/* Step 4: Add the toggle button */}
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
               
               <div className="flex items-center justify-between">
                 <label className="flex items-center">
