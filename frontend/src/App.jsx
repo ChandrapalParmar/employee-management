@@ -28,6 +28,7 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
+      <Route path="/unauthorized" element={<h1>You are not authorized to view this page.</h1>} />
       <Route path="/" element={<Navigate to="/admin-dashboard"/>}></Route>
       <Route path="/login" element={<Login/>}></Route>
       <Route path="/admin-dashboard" element={

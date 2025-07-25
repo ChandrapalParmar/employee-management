@@ -185,8 +185,8 @@ const Add = () => {
                     required
                   >
                     <option value="">Select Status</option>
-                    <option value="single">Single</option>
                     <option value="married">Married</option>
+                    <option value="single">Unmarried</option>
                   </select>
                 </div>
               </div>
@@ -310,7 +310,7 @@ const Add = () => {
                     required
                   >
                     <option value="">Select Role</option>
-                    <option value="admin">Admin</option>
+                    {/* <option value="admin">Admin</option> */}
                     <option value="employee">Employee</option>
                   </select>
                 </div>

@@ -12,45 +12,34 @@ const addLeave = async(req,res)=>{
         })
 
         await newLeave.save()
-
         return res.status(200).json({success: true})
 
     } catch(error) {
         return res.status(500).json({success:false, error:"Leave add server error"})
     }
-
 }
 
 const getLeave = async(req,res)=>{
     try{
         const {id,role} = req.params
-        // <-- Updated: Debugging log add kiya
-        console.log(`Backend Debug: getLeave called with ID: ${id}, Role: ${role}, User making request: ${req.user._id}`);
 
         let leaves
         if(role ==="admin"){
-            // Admin ke liye, sirf un employees ki leaves jo us admin ne banaye hain
             const employee = await Employee.findOne({_id: id, adminId: req.user._id});
-            // <-- Updated: Debugging log add kiya
-            console.log("Backend Debug: Admin role - Result of Employee.findOne by _id:", employee);
+
             if (!employee) {
                 return res.status(404).json({ success: false, error: "Employee not found or not authorized for this admin" });
             }
             leaves = await Leave.find({employeeId: employee._id})
-        } else{ // Employee role
-            const employee = await Employee.findOne({userId: id}) // <-- Yahan query ho rahi hai
-            // <-- Updated: Debugging log add kiya
-            console.log("Backend Debug: Employee role - Result of Employee.findOne by userId:", employee);
+        } else{ 
+            const employee = await Employee.findOne({userId: id})
             if (!employee) {
-                // <-- Updated: More specific error message
                 return res.status(404).json({ success: false, error: "Employee not found for this user ID. Please ensure an employee profile exists for your user." });
             }
             leaves = await Leave.find({ employeeId: employee._id})
         }
         return res.status(200).json({success:true, leaves})
     } catch(error) {
-        // <-- Updated: Actual error ko log karein
-        console.error("Server Error in getLeave function:", error);
         return res.status(500).json({success:false, error:"Server error fetching leaves. Check server console for details."})
     }
 

@@ -24,7 +24,7 @@ const AttendanceReport = () => {
         }
       })
       if(response.data.success){
-        if(skip == 0){
+        if(skip === 0){
           setReport(response.data.groupData)
         } else {
           setReport((prevData) => ({...prevData, ...response.data.groupData}))
